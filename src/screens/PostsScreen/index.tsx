@@ -28,20 +28,24 @@ const PostsScreen = () => {
   }, []);
 
   return (
-    <View style={styles.postsContainer}>
-      {userData ? (
-        userData.posts.map(post => (
-          <View key={post.id}>
-            <Image
-              source={{uri: `${post.image}`}}
-              style={{width: imageWidth, height: imageWidth}}
-            />
-          </View>
-        ))
-      ) : (
-        <ActivityIndicator />
-      )}
-    </View>
+    <>
+      <View style={styles.viewContainer}>
+        <View style={styles.postsContainer}>
+          {userData ? (
+            userData.posts.map(post => (
+              <View key={post.id}>
+                <Image
+                  source={{uri: `${post.image}`}}
+                  style={{width: imageWidth, height: imageWidth}}
+                />
+              </View>
+            ))
+          ) : (
+            <ActivityIndicator />
+          )}
+        </View>
+      </View>
+    </>
   );
 };
 

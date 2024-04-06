@@ -65,7 +65,7 @@ const MyTabBar = ({
               <Text
                 style={[
                   tabStyles.tabText,
-                  {color: isFocused ? '#F3F8FF' : '#7E30E1'},
+                  {color: isFocused ? '#7E30E1' : '#F3F8FF'},
                 ]}>
                 {label}
               </Text>
