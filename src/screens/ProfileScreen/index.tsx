@@ -1,15 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  ActivityIndicator,
-  Pressable,
-  Dimensions,
-} from 'react-native';
+import {View, Text, Image, ActivityIndicator, Pressable} from 'react-native';
 import axios from 'axios';
 import styles from './styles';
 import ProfileHeader from '../../components/organisms/ProfileHeader';
+import ProfileNavigation from '../../navigation/ProfileNavigation';
 
 export interface iUserData {
   name: string;
@@ -28,9 +22,6 @@ export interface iPostData {
 
 const ProfileScreen = () => {
   const [userData, setUserData] = useState<iUserData | null>(null);
-
-  const {width} = Dimensions.get('window');
-  const imageWidth = width / 3;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,7 +74,8 @@ const ProfileScreen = () => {
               </View>
             </Pressable>
           </View>
-          <View style={styles.postsContainer}>
+          <ProfileNavigation />
+          {/* <View style={styles.postsContainer}>
             {userData.posts.map(post => (
               <View key={post.id}>
                 <Image
@@ -92,7 +84,7 @@ const ProfileScreen = () => {
                 />
               </View>
             ))}
-          </View>
+          </View> */}
         </>
       ) : (
         <ActivityIndicator />
