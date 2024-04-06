@@ -1,23 +1,41 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Image} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ActivityIndicator,
+  Pressable,
+  Dimensions,
+} from 'react-native';
 import axios from 'axios';
 import styles from './styles';
 import ProfileHeader from '../../components/organisms/ProfileHeader';
 
-interface UserData {
+export interface iUserData {
   name: string;
   avatar: string;
   followers: number;
   following: number;
+  bio: string;
+  posts: iPostData[];
+}
+
+export interface iPostData {
+  id: string;
+  image: string;
+  caption: string;
 }
 
 const ProfileScreen = () => {
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [userData, setUserData] = useState<iUserData | null>(null);
+
+  const {width} = Dimensions.get('window');
+  const imageWidth = width / 3;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<UserData[]>(
+        const response = await axios.get<iUserData[]>(
           'https://660fd81d0640280f219b9867.mockapi.io/api/hub/user',
         );
         if (response.data && response.data.length > 0) {
@@ -40,29 +58,44 @@ const ProfileScreen = () => {
             <View>
               <Image source={{uri: userData.avatar}} style={styles.avatar} />
             </View>
-            <View style={{flexDirection: 'row'}}>
-              <View style={{flexDirection: 'column'}}>
-                <Text style={{fontSize: 22, textAlign: 'center'}}>
-                  {userData.followers}
-                </Text>
-                <Text style={{textAlign: 'center', marginHorizontal: 10}}>
-                  Followers
-                </Text>
+            <View style={styles.ffContainer}>
+              <View style={styles.ffCol}>
+                <Text style={styles.ffNumbers}>{userData.followers}</Text>
+                <Text style={styles.ffLabel}>Followers</Text>
               </View>
-              <View style={{flexDirection: 'column'}}>
-                <Text style={{fontSize: 22, textAlign: 'center'}}>
-                  {userData.following}
-                </Text>
-                <Text style={{textAlign: 'center', marginHorizontal: 10}}>
-                  Following
-                </Text>
+              <View style={styles.ffCol}>
+                <Text style={styles.ffNumbers}>{userData.following}</Text>
+                <Text style={styles.ffLabel}>Following</Text>
               </View>
             </View>
           </View>
           <Text>{userData.name}</Text>
+          <Text>{userData.bio}</Text>
+          <View style={styles.profileButtonsContainer}>
+            <Pressable>
+              <View style={styles.profileButtons}>
+                <Text style={styles.buttonTitles}>Edit Profile</Text>
+              </View>
+            </Pressable>
+            <Pressable>
+              <View style={styles.profileButtons}>
+                <Text style={styles.buttonTitles}>Share Profile</Text>
+              </View>
+            </Pressable>
+          </View>
+          <View style={styles.postsContainer}>
+            {userData.posts.map(post => (
+              <View key={post.id}>
+                <Image
+                  source={{uri: `${post.image}`}}
+                  style={{width: imageWidth, height: imageWidth}}
+                />
+              </View>
+            ))}
+          </View>
         </>
       ) : (
-        <Text>Loading...</Text>
+        <ActivityIndicator />
       )}
     </View>
   );
