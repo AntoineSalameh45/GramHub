@@ -1,12 +1,32 @@
 import {View, Text, StyleSheet} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import axios from 'axios';
 import GearSvg from '../../assets/svg/GearSvg.svg';
 import NotifSvg from '../../assets/svg/BellSvg.svg';
+import {iUserData} from '../../screens/ProfileScreen';
 
 const ProfileHeader = () => {
+  const [userName, setUserName] = useState<iUserData | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get<iUserData[]>(
+          'https://660fd81d0640280f219b9867.mockapi.io/api/hub/user',
+        );
+        if (response.data && response.data.length > 0) {
+          setUserName(response.data[0]);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <View style={styles.viewContainer}>
-      <Text style={styles.title}>GramHub</Text>
+      <Text style={styles.title}>@{userName?.name}</Text>
       <View style={styles.viewButtonsContainer}>
         <NotifSvg width={30} height={30} />
         <GearSvg width={30} height={30} />
@@ -26,7 +46,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#333',
   },
-  title: {fontSize: 24, fontFamily: 'Pacifico-Regular', marginLeft: 10},
+  title: {
+    fontSize: 24,
+    fontFamily: 'Montserrat-VariableFont_wght',
+    marginLeft: 10,
+  },
   viewButtonsContainer: {
     flex: 0.4,
     flexDirection: 'row',
