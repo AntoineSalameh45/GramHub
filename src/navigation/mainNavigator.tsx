@@ -1,13 +1,13 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {RootStackParamList} from './RootStackParamList';
-import Home from '../screens/Home';
 import SearchScreen from '../screens/SearchScreen';
 import MyTabBar from '../components/organisms/CustomTabBar';
 import UserScreen from '../screens/UserScreen';
 import HomeIcon from '../assets/svg/HomeSvg.svg';
 import SearchIcon from '../assets/svg/SearchSvg.svg';
 import ProfileIcon from '../assets/svg/ProfileSvg.svg';
+import HomeNav from './HomeNav';
 
 const MainStackNavigator = createBottomTabNavigator<RootStackParamList>();
 
@@ -19,7 +19,7 @@ const MainNavigator = () => {
       tabBar={props => <MyTabBar icons={icons} {...props} />}>
       <MainStackNavigator.Screen
         name="Home"
-        component={Home}
+        component={HomeNav}
         options={{
           headerShown: false,
           tabBarIcon: () => <HomeIcon />,

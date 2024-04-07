@@ -1,15 +1,20 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
 import React from 'react';
 import DmSvg from '../../assets/svg/DmSvg.svg';
 import NotifSvg from '../../assets/svg/BellSvg.svg';
 
-const AppHeader = () => {
+const AppHeader = ({navigation}: any) => {
   return (
     <View style={styles.viewContainer}>
       <Text style={styles.title}>GramHub</Text>
       <View style={styles.viewButtonsContainer}>
         <NotifSvg width={30} height={30} />
-        <DmSvg width={30} height={30} />
+        <Pressable
+          onPress={() => {
+            navigation.navigate('DMList');
+          }}>
+          <DmSvg width={30} height={30} />
+        </Pressable>
       </View>
     </View>
   );

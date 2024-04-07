@@ -17,11 +17,12 @@ interface iPhoto {
   caption: string;
 }
 
-const Home = () => {
+const Home = ({navigation}: any) => {
   const [photos, setPhotos] = useState<iPhoto[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [page, setPage] = useState(1);
+  const width = 25;
 
   const fetchData = async (page: number) => {
     try {
@@ -79,12 +80,12 @@ const Home = () => {
       </View>
       <View style={styles.postBottom}>
         <View style={styles.postIcons}>
-          <LikeSvg width={25} height={25} />
-          <CommentSvg width={25} height={25} />
-          <ShareSvg width={25} height={25} />
+          <LikeSvg width={width} height={width} />
+          <CommentSvg width={width} height={width} />
+          <ShareSvg width={width} height={width} />
         </View>
         <View>
-          <SaveSvg width={25} height={25} />
+          <SaveSvg width={width} height={width} />
         </View>
       </View>
       <View style={styles.postCaption}>
@@ -96,7 +97,7 @@ const Home = () => {
 
   return (
     <View style={styles.viewContainer}>
-      <AppHeader />
+      <AppHeader navigation={navigation} />
       <FlatList
         ListHeaderComponent={<StoryBar />}
         data={photos}
