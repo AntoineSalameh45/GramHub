@@ -51,6 +51,10 @@ const ProfileScreen = () => {
             </View>
             <View style={styles.ffContainer}>
               <View style={styles.ffCol}>
+                <Text style={styles.ffNumbers}>{userData.posts.length}</Text>
+                <Text style={styles.ffLabel}>Posts</Text>
+              </View>
+              <View style={styles.ffCol}>
                 <Text style={styles.ffNumbers}>{userData.followers}</Text>
                 <Text style={styles.ffLabel}>Followers</Text>
               </View>
@@ -75,16 +79,6 @@ const ProfileScreen = () => {
             </Pressable>
           </View>
           <ProfileNavigation />
-          {/* <View style={styles.postsContainer}>
-            {userData.posts.map(post => (
-              <View key={post.id}>
-                <Image
-                  source={{uri: `${post.image}`}}
-                  style={{width: imageWidth, height: imageWidth}}
-                />
-              </View>
-            ))}
-          </View> */}
         </>
       ) : (
         <ActivityIndicator />
