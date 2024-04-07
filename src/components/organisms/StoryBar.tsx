@@ -17,36 +17,52 @@ interface iStory {
 
 const StoryBar = () => {
   const [story, setStory] = useState<iStory[]>([]);
+  const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const fetchData = async () => {
+  const [pageNumber, setPageNumber] = useState(1);
+
+  const fetchStoryData = async (page: number) => {
     try {
       const response = await axios.get(
-        'https://660fd81d0640280f219b9867.mockapi.io/api/hub/post',
+        `https://660fd81d0640280f219b9867.mockapi.io/api/hub/post?page=${page}&limit=10`,
       );
-      setStory(response.data);
+      return response.data;
     } catch (error) {
       console.error('Error fetching data:', error);
-    } finally {
-      setRefreshing(false);
+      return [];
     }
+  };
+
+  const fetchData = async () => {
+    setLoading(true);
+    const newData = await fetchStoryData(pageNumber);
+    setStory(prevStory => [...prevStory, ...newData]);
+    setLoading(false);
   };
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [pageNumber]);
 
   const onRefresh = () => {
     setRefreshing(true);
+    setPageNumber(1);
+    setStory([]);
     fetchData();
+    setRefreshing(false);
+  };
+
+  const handleLoadMore = () => {
+    if (!loading) {
+      setPageNumber(page => page + 1);
+    }
   };
 
   const renderItem = ({item}: {item: iStory}) => (
-    <>
-      <View style={styles.storyContainer}>
-        <Image source={{uri: `${item.avatar}`}} style={styles.storyAvatar} />
-        <Text style={styles.storyUser}>{item.name}</Text>
-      </View>
-    </>
+    <View style={styles.storyContainer}>
+      <Image source={{uri: `${item.avatar}`}} style={styles.storyAvatar} />
+      <Text style={styles.storyUser}>{item.name}</Text>
+    </View>
   );
 
   return (
@@ -56,9 +72,12 @@ const StoryBar = () => {
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
         horizontal={true}
+        showsHorizontalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
+        onEndReachedThreshold={1}
+        onEndReached={handleLoadMore}
       />
     </View>
   );
