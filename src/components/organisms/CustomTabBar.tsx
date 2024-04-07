@@ -1,36 +1,23 @@
 import React, {PropsWithChildren} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ViewStyle,
-  TextStyle,
-  StyleSheet,
-} from 'react-native';
+import {View, TouchableOpacity} from 'react-native';
+import tabStyles from './tabStyles';
 
 interface TabBarProps {
   state: any;
   descriptors: any;
   navigation: any;
+  icons: any;
 }
 
 const MyTabBar = ({
   state,
-  descriptors,
   navigation,
+  icons,
 }: PropsWithChildren<TabBarProps>) => {
   return (
     <>
       <View style={tabStyles.tabContainer}>
         {state.routes.map((route: any, index: number) => {
-          const {options} = descriptors[route.key];
-          const label =
-            options.tabBarLabel !== undefined
-              ? options.tabBarLabel
-              : options.title !== undefined
-              ? options.title
-              : route.name;
-
           const isFocused = state.index === index;
 
           const onPress = () => {
@@ -52,23 +39,24 @@ const MyTabBar = ({
             });
           };
 
+          const Icon = icons[index];
+
           return (
             <TouchableOpacity
               key={route.key}
               accessibilityRole="button"
               accessibilityState={isFocused ? {selected: true} : {}}
-              accessibilityLabel={options.tabBarAccessibilityLabel}
-              testID={options.tabBarTestID}
               onPress={onPress}
               onLongPress={onLongPress}
-              style={tabStyles.tabButton}>
-              <Text
-                style={[
-                  tabStyles.tabText,
-                  {color: isFocused ? '#7E30E1' : '#F3F8FF'},
-                ]}>
-                {label}
-              </Text>
+              style={[
+                tabStyles.tabButton,
+                isFocused ? tabStyles.tabButtonFocused : null,
+              ]}>
+              <Icon
+                width={24}
+                height={24}
+                fill={isFocused ? '#7E30E1' : '#222'}
+              />
             </TouchableOpacity>
           );
         })}
@@ -78,17 +66,3 @@ const MyTabBar = ({
 };
 
 export default MyTabBar;
-
-const tabStyles = StyleSheet.create({
-  tabContainer: {
-    flexDirection: 'row',
-    backgroundColor: '#222',
-  },
-  tabButton: {
-    flex: 1,
-  } as ViewStyle,
-  tabText: {
-    textAlign: 'center',
-    padding: 16,
-  } as TextStyle,
-});

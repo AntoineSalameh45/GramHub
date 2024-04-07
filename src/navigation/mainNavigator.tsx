@@ -1,29 +1,45 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {RootStackParamList} from './RootStackParamList';
 import Home from '../screens/Home';
-import MyTabBar from '../components/organisms/CustomTabBar';
 import SearchScreen from '../screens/SearchScreen';
-import ProfileScreen from '../screens/ProfileScreen';
+import MyTabBar from '../components/organisms/CustomTabBar';
+import UserScreen from '../screens/UserScreen';
+import HomeIcon from '../assets/svg/HomeSvg.svg';
+import SearchIcon from '../assets/svg/SearchSvg.svg';
+import ProfileIcon from '../assets/svg/ProfileSvg.svg';
 
-const MainStackNavigator = createBottomTabNavigator();
+const MainStackNavigator = createBottomTabNavigator<RootStackParamList>();
 
 const MainNavigator = () => {
+  const icons = [HomeIcon, SearchIcon, ProfileIcon];
+
   return (
-    <MainStackNavigator.Navigator tabBar={props => <MyTabBar {...props} />}>
+    <MainStackNavigator.Navigator
+      tabBar={props => <MyTabBar icons={icons} {...props} />}>
       <MainStackNavigator.Screen
         name="Home"
         component={Home}
-        options={{headerShown: false}}
+        options={{
+          headerShown: false,
+          tabBarIcon: () => <HomeIcon />,
+        }}
       />
       <MainStackNavigator.Screen
         name="Search"
         component={SearchScreen}
-        options={{headerShown: false}}
+        options={{
+          headerShown: false,
+          tabBarIcon: () => <SearchIcon />,
+        }}
       />
       <MainStackNavigator.Screen
         name="Profile"
-        component={ProfileScreen}
-        options={{headerShown: false}}
+        component={UserScreen}
+        options={{
+          headerShown: false,
+          tabBarIcon: () => <ProfileIcon />,
+        }}
       />
     </MainStackNavigator.Navigator>
   );
