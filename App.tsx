@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React, {useEffect} from 'react';
 import BootSplash from 'react-native-bootsplash';
 import {NavigationContainer} from '@react-navigation/native';
