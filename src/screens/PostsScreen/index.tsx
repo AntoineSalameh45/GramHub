@@ -1,11 +1,18 @@
-import {View, Image, Dimensions, ActivityIndicator} from 'react-native';
 import React, {useEffect, useState} from 'react';
+import {
+  View,
+  FlatList,
+  Image,
+  Dimensions,
+  ActivityIndicator,
+} from 'react-native';
 import styles from './styles';
 import {iUserData} from '../ProfileScreen';
 import axios from 'axios';
 
 const PostsScreen = () => {
   const [userData, setUserData] = useState<iUserData | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const {width} = Dimensions.get('window');
   const imageWidth = width / 3;
@@ -19,33 +26,38 @@ const PostsScreen = () => {
         if (response.data && response.data.length > 0) {
           setUserData(response.data[0]);
         }
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching user data:', error);
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
+  const renderPostItem = ({item}: {item: {id: string; image: string}}) => (
+    <View key={item.id}>
+      <Image
+        source={{uri: `${item.image}`}}
+        style={{width: imageWidth, height: imageWidth}}
+      />
+    </View>
+  );
+
   return (
-    <>
-      <View style={styles.viewContainer}>
-        <View style={styles.postsContainer}>
-          {userData ? (
-            userData.posts.map(post => (
-              <View key={post.id}>
-                <Image
-                  source={{uri: `${post.image}`}}
-                  style={{width: imageWidth, height: imageWidth}}
-                />
-              </View>
-            ))
-          ) : (
-            <ActivityIndicator />
-          )}
-        </View>
-      </View>
-    </>
+    <View style={styles.viewContainer}>
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <FlatList
+          data={userData?.posts || []}
+          renderItem={renderPostItem}
+          keyExtractor={item => item.id.toString()}
+          numColumns={3}
+        />
+      )}
+    </View>
   );
 };
 

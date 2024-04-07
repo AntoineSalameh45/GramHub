@@ -5,9 +5,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#222',
   },
-  postsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
 });
 export default styles;
