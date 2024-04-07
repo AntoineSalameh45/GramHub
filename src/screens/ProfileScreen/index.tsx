@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, Image, ActivityIndicator, Pressable} from 'react-native';
 import axios from 'axios';
 import styles from './styles';
-import ProfileHeader from '../../components/organisms/ProfileHeader';
 import ProfileNavigation from '../../navigation/ProfileNavigation';
 
 export interface iUserData {
@@ -42,7 +41,6 @@ const ProfileScreen = () => {
 
   return (
     <View style={styles.viewContainer}>
-      <ProfileHeader />
       {userData ? (
         <>
           <View style={styles.userDataContainer}>
