@@ -4,6 +4,8 @@ import BootSplash from 'react-native-bootsplash';
 import {NavigationContainer} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import MainNavigator from './src/navigation/mainNavigator';
+import UnAuthSatck from './src/navigation/UnAuthSatck';
+import useAuthStore from './src/store/authStore';
 
 const linking = {
   prefixes: ['gramhub://'],
@@ -18,6 +20,7 @@ const linking = {
 };
 
 const App = () => {
+  const {authToken} = useAuthStore();
   useEffect(() => {
     setTimeout(() => {
       BootSplash.hide();
@@ -26,7 +29,7 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <NavigationContainer linking={linking}>
-        <MainNavigator />
+        {authToken ? <MainNavigator /> : <UnAuthSatck />}
       </NavigationContainer>
     </SafeAreaProvider>
   );

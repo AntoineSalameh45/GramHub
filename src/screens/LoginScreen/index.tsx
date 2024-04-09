@@ -1,14 +1,43 @@
-import {View, Text, TextInput, TouchableOpacity, Pressable} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Pressable,
+  ActivityIndicator,
+} from 'react-native';
 import React, {useState} from 'react';
 import LockSvg from '../../assets/svg/LockSvg.svg';
 import UserSvg from '../../assets/svg/UserSvg.svg';
 import VisibleSvg from '../../assets/svg/VisibleSvg.svg';
 import LoginSvg from '../../assets/svg/LoginSvg.svg';
 import styles from './styles';
+import axios from 'axios';
+import useAuthStore from '../../store/authStore';
 
 const LoginScreen = () => {
-  const [username, onChangeText] = useState('');
-  const [pass, onChangePassword] = useState('');
+  const [username, setUsername] = useState('kminchelle');
+  const [password, setPassword] = useState('0lelplR');
+  const [loading, setLoading] = useState(false);
+
+  const {setAuthToken} = useAuthStore();
+  const onLogin = async () => {
+    try {
+      setLoading(true);
+
+      const result = await axios.post('https://dummyjson.com/auth/login', {
+        username,
+        password,
+      });
+
+      setAuthToken(result.data.token);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const [passHidden, setPassHidden] = useState<false | true>(true);
 
   const toggleVisibility = () => {
@@ -23,7 +52,7 @@ const LoginScreen = () => {
         <View style={styles.inputField}>
           <UserSvg width={20} height={20} />
           <TextInput
-            onChangeText={onChangeText}
+            onChangeText={setUsername}
             value={username}
             style={styles.inputText}
             placeholder="Enter username here"
@@ -34,8 +63,8 @@ const LoginScreen = () => {
         <View style={styles.inputField}>
           <LockSvg width={20} height={20} />
           <TextInput
-            onChangeText={onChangePassword}
-            value={pass}
+            onChangeText={setPassword}
+            value={password}
             secureTextEntry={passHidden}
             style={styles.inputText}
             placeholder="Enter password here"
@@ -46,9 +75,13 @@ const LoginScreen = () => {
           </TouchableOpacity>
         </View>
         <View style={styles.loginButton}>
-          <Pressable>
-            <LoginSvg height={50} width={50} />
-          </Pressable>
+          {loading ? (
+            <ActivityIndicator />
+          ) : (
+            <Pressable onPress={onLogin}>
+              <LoginSvg height={50} width={50} />
+            </Pressable>
+          )}
         </View>
       </View>
     </View>
