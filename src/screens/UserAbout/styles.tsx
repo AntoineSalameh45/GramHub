@@ -24,17 +24,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
     borderTopColor: '#444',
   },
-  saveButton: {
-    backgroundColor: '#7E30E1',
-    borderRadius: 5,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    marginTop: 20,
-    marginRight: 25,
-    alignSelf: 'flex-end',
-    borderWidth: 1,
-    borderColor: '#F3F8FF',
-  },
   saveButtonText: {
     color: '#F3F8FF',
   },

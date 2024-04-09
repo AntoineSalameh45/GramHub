@@ -45,5 +45,8 @@ const styles = StyleSheet.create({
   },
   modalText: {color: '#F3F8FF'},
   modalCloseText: {color: '#F3F8FF', textAlign: 'right', marginTop: 10},
+  indicator: {marginTop: 20},
+  buttonContainer: {marginTop: 30},
+  buttonText: {color: '#FFFFFF', fontSize: 16},
 });
 export default styles;

@@ -4,15 +4,14 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Pressable,
   ActivityIndicator,
   Image,
   Modal,
+  Pressable,
 } from 'react-native';
 import LockSvg from '../../assets/svg/LockSvg.svg';
 import UserSvg from '../../assets/svg/UserSvg.svg';
 import VisibleSvg from '../../assets/svg/VisibleSvg.svg';
-import LoginSvg from '../../assets/svg/LoginSvg.svg';
 import styles from './styles';
 import axios from 'axios';
 import useAuthStore from '../../store/authStore';
@@ -22,18 +21,16 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('0lelplR');
   const [loading, setLoading] = useState(false);
   const [errorModalVisible, setErrorModalVisible] = useState(false);
-
   const {setAuthToken} = useAuthStore();
+  const [passHidden, setPassHidden] = useState(false);
 
   const onLogin = async () => {
     try {
       setLoading(true);
-
       const result = await axios.post('https://dummyjson.com/auth/login', {
         username,
         password,
       });
-
       setAuthToken(result.data.token);
     } catch (err) {
       console.log(err);
@@ -43,15 +40,15 @@ const LoginScreen = () => {
     }
   };
 
-  const [passHidden, setPassHidden] = useState<false | true>(true);
-
   const toggleVisibility = () => {
     setPassHidden(prev => !prev);
   };
 
+  const isButtonDisabled = !username || !password || loading;
+
   return (
     <View style={styles.viewContainer}>
-      <Image source={require('../../assets/slpash.png')} style={styles.image} />
+      <Image source={require('../../assets/splash.png')} style={styles.image} />
       <View style={styles.formContainer}>
         <Text style={styles.formLabel}>Username:</Text>
         <View style={styles.inputField}>
@@ -70,7 +67,7 @@ const LoginScreen = () => {
           <TextInput
             onChangeText={setPassword}
             value={password}
-            secureTextEntry={passHidden}
+            secureTextEntry={!passHidden}
             style={styles.inputText}
             placeholder="Enter password here"
             placeholderTextColor={'#cdcdcd'}
@@ -81,11 +78,30 @@ const LoginScreen = () => {
         </View>
         <View style={styles.loginButton}>
           {loading ? (
-            <ActivityIndicator />
+            <ActivityIndicator
+              size="large"
+              color="#7E30E1"
+              animating={true}
+              hidesWhenStopped={true}
+              style={styles.indicator}
+            />
           ) : (
-            <Pressable onPress={onLogin}>
-              <LoginSvg height={50} width={50} />
-            </Pressable>
+            <View style={styles.buttonContainer}>
+              <Pressable
+                onPress={onLogin}
+                disabled={isButtonDisabled}
+                style={({pressed}) => [
+                  {
+                    backgroundColor: pressed ? '#6C2492' : '#7E30E1',
+                    borderRadius: 10,
+                    paddingVertical: 10,
+                    paddingHorizontal: 20,
+                  },
+                  isButtonDisabled && {backgroundColor: '#CCCCCC'},
+                ]}>
+                <Text style={styles.buttonText}>Login</Text>
+              </Pressable>
+            </View>
           )}
         </View>
       </View>

@@ -89,7 +89,19 @@ const AboutAccount = ({navigation}: any) => {
             style={styles.inputStyle}
           />
         </View>
-        <Pressable onPress={handleSave} style={styles.saveButton}>
+        <Pressable
+          onPress={handleSave}
+          style={({pressed}) => [
+            {
+              backgroundColor: pressed ? '#6C2492' : '#7E30E1',
+              borderRadius: 5,
+              paddingVertical: 10,
+              paddingHorizontal: 20,
+              marginTop: 20,
+              marginRight: 25,
+              alignSelf: 'flex-end',
+            },
+          ]}>
           <Text style={styles.saveButtonText}>Save</Text>
         </Pressable>
       </View>
