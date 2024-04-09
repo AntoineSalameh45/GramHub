@@ -1,3 +1,4 @@
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -5,8 +6,9 @@ import {
   TouchableOpacity,
   Pressable,
   ActivityIndicator,
+  Image,
+  Modal,
 } from 'react-native';
-import React, {useState} from 'react';
 import LockSvg from '../../assets/svg/LockSvg.svg';
 import UserSvg from '../../assets/svg/UserSvg.svg';
 import VisibleSvg from '../../assets/svg/VisibleSvg.svg';
@@ -19,8 +21,10 @@ const LoginScreen = () => {
   const [username, setUsername] = useState('kminchelle');
   const [password, setPassword] = useState('0lelplR');
   const [loading, setLoading] = useState(false);
+  const [errorModalVisible, setErrorModalVisible] = useState(false);
 
   const {setAuthToken} = useAuthStore();
+
   const onLogin = async () => {
     try {
       setLoading(true);
@@ -33,6 +37,7 @@ const LoginScreen = () => {
       setAuthToken(result.data.token);
     } catch (err) {
       console.log(err);
+      setErrorModalVisible(true);
     } finally {
       setLoading(false);
     }
@@ -41,12 +46,12 @@ const LoginScreen = () => {
   const [passHidden, setPassHidden] = useState<false | true>(true);
 
   const toggleVisibility = () => {
-    const showingPass = passHidden === false ? true : false;
-    setPassHidden(showingPass);
+    setPassHidden(prev => !prev);
   };
+
   return (
     <View style={styles.viewContainer}>
-      <Text style={styles.title}>Login:</Text>
+      <Image source={require('../../assets/slpash.png')} style={styles.image} />
       <View style={styles.formContainer}>
         <Text style={styles.formLabel}>Username:</Text>
         <View style={styles.inputField}>
@@ -84,6 +89,18 @@ const LoginScreen = () => {
           )}
         </View>
       </View>
+      <Modal visible={errorModalVisible} animationType="fade" transparent>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>
+              Invalid username or password. Close this alert and try again.
+            </Text>
+            <TouchableOpacity onPress={() => setErrorModalVisible(false)}>
+              <Text style={styles.modalCloseText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };

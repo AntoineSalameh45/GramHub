@@ -24,8 +24,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 10,
+    borderRadius: 11,
   },
   inputText: {color: '#000', flex: 1},
   loginButton: {alignSelf: 'flex-end'},
+  image: {height: 100, width: 100},
+  modalContainer: {
+    backgroundColor: '#500',
+    width: '75%',
+    position: 'absolute',
+    top: 50,
+    alignSelf: 'center',
+    borderWidth: 1,
+    borderColor: '#f00',
+    borderRadius: 11,
+  },
+  modalContent: {
+    alignSelf: 'center',
+    padding: 10,
+  },
+  modalText: {color: '#F3F8FF'},
+  modalCloseText: {color: '#F3F8FF', textAlign: 'right', marginTop: 10},
 });
 export default styles;
