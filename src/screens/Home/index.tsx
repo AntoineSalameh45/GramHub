@@ -1,8 +1,15 @@
 import React, {useState, useEffect, useCallback, PureComponent} from 'react';
-import {View, FlatList, Image, RefreshControl, Text} from 'react-native';
+import {
+  View,
+  FlatList,
+  Image,
+  RefreshControl,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import axios from 'axios';
 import styles from './styles';
-import LikeSvg from '../../assets/svg/LikeSvg.svg';
+import LikeSvg from '../../assets/svg/LikeSvg2.svg';
 import CommentSvg from '../../assets/svg/CommentSvg.svg';
 import ShareSvg from '../../assets/svg/ShareSvg.svg';
 import SaveSvg from '../../assets/svg/SaveSvg.svg';
