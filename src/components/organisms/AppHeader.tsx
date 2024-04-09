@@ -8,10 +8,15 @@ const AppHeader = ({navigation}: any) => {
     <View style={styles.viewContainer}>
       <Text style={styles.title}>GramHub</Text>
       <View style={styles.viewButtonsContainer}>
-        <NotifSvg width={30} height={30} />
         <Pressable
           onPress={() => {
-            navigation.navigate('DMList');
+            navigation.navigate('Notification Center');
+          }}>
+          <NotifSvg width={30} height={30} />
+        </Pressable>
+        <Pressable
+          onPress={() => {
+            navigation.navigate('Direct Messages');
           }}>
           <DmSvg width={30} height={30} />
         </Pressable>
@@ -31,7 +36,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#333',
   },
-  title: {fontSize: 24, fontFamily: 'Pacifico-Regular', marginLeft: 10},
+  title: {
+    fontSize: 24,
+    fontFamily: 'Pacifico-Regular',
+    marginLeft: 10,
+    color: '#F3F8FF',
+  },
   viewButtonsContainer: {
     flex: 0.4,
     flexDirection: 'row',

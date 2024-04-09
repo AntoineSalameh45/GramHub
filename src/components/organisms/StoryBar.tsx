@@ -58,6 +58,12 @@ const StoryBar = () => {
     }
   };
 
+  const uniqueStories = Array.from(new Set(story.map(item => item.name))).map(
+    name => {
+      return story.find(item => item.name === name);
+    },
+  );
+
   const renderItem = ({item}: {item: iStory}) => (
     <View style={styles.storyContainer}>
       <Image source={{uri: `${item.avatar}`}} style={styles.storyAvatar} />
@@ -68,7 +74,7 @@ const StoryBar = () => {
   return (
     <View style={styles.viewContainer}>
       <FlatList
-        data={story}
+        data={uniqueStories}
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
         horizontal={true}
@@ -94,5 +100,5 @@ const styles = StyleSheet.create({
   },
   storyContainer: {marginHorizontal: 11},
   storyAvatar: {height: 75, width: 75, borderRadius: 100 / 2},
-  storyUser: {fontSize: 10, textAlign: 'center'},
+  storyUser: {fontSize: 10, textAlign: 'center', color: '#F3F8FF'},
 });

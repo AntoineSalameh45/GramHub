@@ -19,7 +19,7 @@ export interface iPostData {
   caption: string;
 }
 
-const ProfileScreen = () => {
+const ProfileScreen = ({navigation}: any) => {
   const [userData, setUserData] = useState<iUserData | null>(null);
 
   useEffect(() => {
@@ -38,6 +38,26 @@ const ProfileScreen = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get<iUserData[]>(
+          'https://660fd81d0640280f219b9867.mockapi.io/api/hub/user',
+        );
+        if (response.data && response.data.length > 0) {
+          setUserData(response.data[0]);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchData();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <View style={styles.viewContainer}>
@@ -62,12 +82,17 @@ const ProfileScreen = () => {
               </View>
             </View>
           </View>
-          <Text>{userData.name}</Text>
-          <Text>{userData.bio}</Text>
+          <Text style={styles.text}>{userData.name}</Text>
+          <Text style={styles.text}>{userData.bio}</Text>
           <View style={styles.profileButtonsContainer}>
             <Pressable>
               <View style={styles.profileButtons}>
-                <Text style={styles.buttonTitles}>Edit Profile</Text>
+                <Pressable
+                  onPress={() => {
+                    navigation.navigate('About Account');
+                  }}>
+                  <Text style={styles.buttonTitles}>Edit Profile</Text>
+                </Pressable>
               </View>
             </Pressable>
             <Pressable>

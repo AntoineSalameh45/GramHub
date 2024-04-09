@@ -20,8 +20,8 @@ const styles = StyleSheet.create({
   },
   ffContainer: {flexDirection: 'row'},
   ffCol: {flexDirection: 'column'},
-  ffNumbers: {fontSize: 22, textAlign: 'center'},
-  ffLabel: {textAlign: 'center', marginHorizontal: 10},
+  ffNumbers: {fontSize: 22, textAlign: 'center', color: '#F3F8FF'},
+  ffLabel: {textAlign: 'center', marginHorizontal: 10, color: '#F3F8FF'},
   profileButtons: {
     padding: 10,
     paddingHorizontal: 45,
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   profileButtonsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     marginBottom: 30,
   },
   buttonTitles: {color: '#F3F8FF'},
@@ -38,5 +38,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
+  text: {color: '#F3F8FF'},
 });
 export default styles;

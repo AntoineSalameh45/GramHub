@@ -15,8 +15,8 @@ const HomeNav = () => {
         component={Home}
         options={{headerShown: false}}
       />
-      <Tab.Screen name="DMList" component={DirectMessagesList} />
-      <Tab.Screen name="NotifCenter" component={NotifCenter} />
+      <Tab.Screen name="Direct Messages" component={DirectMessagesList} />
+      <Tab.Screen name="Notification Center" component={NotifCenter} />
     </Tab.Navigator>
   );
 };

@@ -26,6 +26,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: 10,
     paddingHorizontal: 20,
+    color: '#F3F8FF',
   },
+  text: {color: '#F3F8FF'},
 });
 export default styles;

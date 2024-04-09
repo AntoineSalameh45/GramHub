@@ -5,6 +5,18 @@ import {NavigationContainer} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import MainNavigator from './src/navigation/mainNavigator';
 
+const linking = {
+  prefixes: ['gramhub://'],
+  config: {
+    initialRouteName: 'Home' as const,
+    screens: {
+      Home: 'home',
+      Search: 'search',
+      Profile: 'profile',
+    },
+  },
+};
+
 const App = () => {
   useEffect(() => {
     setTimeout(() => {
@@ -13,7 +25,7 @@ const App = () => {
   }, []);
   return (
     <SafeAreaProvider>
-      <NavigationContainer>
+      <NavigationContainer linking={linking}>
         <MainNavigator />
       </NavigationContainer>
     </SafeAreaProvider>
