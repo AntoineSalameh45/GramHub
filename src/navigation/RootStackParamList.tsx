@@ -3,6 +3,8 @@ export type RootStackParamList = {
   HomeScreen: undefined;
   Search: undefined;
   Profile: undefined;
+  Details: undefined;
+  User: undefined;
   'Direct Messages': undefined;
   'Notification Center': undefined;
 };

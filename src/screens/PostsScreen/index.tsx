@@ -5,12 +5,13 @@ import {
   Image,
   Dimensions,
   ActivityIndicator,
+  Pressable,
 } from 'react-native';
 import styles from './styles';
 import {iUserData} from '../ProfileScreen';
 import axios from 'axios';
 
-const PostsScreen = () => {
+const PostsScreen = ({navigation}: any) => {
   const [userData, setUserData] = useState<iUserData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -38,10 +39,15 @@ const PostsScreen = () => {
 
   const renderPostItem = ({item}: {item: {id: string; image: string}}) => (
     <View key={item.id}>
-      <Image
-        source={{uri: `${item.image}`}}
-        style={{width: imageWidth, height: imageWidth}}
-      />
+      <Pressable
+        onPress={() => {
+          navigation.navigate('Details', {postId: item.id});
+        }}>
+        <Image
+          source={{uri: `${item.image}`}}
+          style={{width: imageWidth, height: imageWidth}}
+        />
+      </Pressable>
     </View>
   );
 
