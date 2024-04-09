@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback, PureComponent} from 'react';
 import {View, FlatList, Image, RefreshControl, Text} from 'react-native';
 import axios from 'axios';
 import styles from './styles';
@@ -17,17 +17,47 @@ interface iPhoto {
   caption: string;
 }
 
+class OptimizedListItem extends PureComponent<{item: iPhoto}> {
+  render() {
+    const {item} = this.props;
+    return (
+      <View>
+        <View style={styles.postHeader}>
+          <Image source={{uri: item.avatar}} style={styles.avatar} />
+          <Text style={styles.userName}>{item.name}</Text>
+        </View>
+        <View style={styles.imageContainer}>
+          <Image source={{uri: item.image}} style={styles.image} />
+        </View>
+        <View style={styles.postBottom}>
+          <View style={styles.postIcons}>
+            <LikeSvg width={25} height={25} />
+            <CommentSvg width={25} height={25} />
+            <ShareSvg width={25} height={25} />
+          </View>
+          <View>
+            <SaveSvg width={25} height={25} />
+          </View>
+        </View>
+        <View style={styles.postCaption}>
+          <Text style={styles.userName}>{item.name}</Text>
+          <Text style={styles.caption}> {item.caption}</Text>
+        </View>
+      </View>
+    );
+  }
+}
+
 const Home = ({navigation}: any) => {
   const [photos, setPhotos] = useState<iPhoto[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [page, setPage] = useState(1);
-  const width = 25;
 
-  const fetchData = async (page: number) => {
+  const fetchData = async (pageNum: number) => {
     try {
       const response = await axios.get(
-        `https://660fd81d0640280f219b9867.mockapi.io/api/hub/post?page=${page}&limit=5`,
+        `https://660fd81d0640280f219b9867.mockapi.io/api/hub/post?page=${pageNum}&limit=5`,
       );
       return response.data;
     } catch (error) {
@@ -36,7 +66,7 @@ const Home = ({navigation}: any) => {
     }
   };
 
-  const loadMoreData = async () => {
+  const loadMoreData = useCallback(async () => {
     if (!loadingMore) {
       setLoadingMore(true);
       const nextPage = page + 1;
@@ -47,7 +77,7 @@ const Home = ({navigation}: any) => {
       }
       setLoadingMore(false);
     }
-  };
+  }, [loadingMore, page]);
 
   useEffect(() => {
     const loadInitialData = async () => {
@@ -60,40 +90,14 @@ const Home = ({navigation}: any) => {
     loadInitialData();
   }, []);
 
-  const onRefresh = () => {
+  const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchData(1).then(data => {
       setPhotos(data);
       setPage(1);
       setRefreshing(false);
     });
-  };
-
-  const renderItem = ({item}: {item: iPhoto}) => (
-    <>
-      <View style={styles.postHeader}>
-        <Image source={{uri: `${item.avatar}`}} style={styles.avatar} />
-        <Text style={styles.userName}>{item.name}</Text>
-      </View>
-      <View style={styles.imageContainer}>
-        <Image source={{uri: `${item.image}`}} style={styles.image} />
-      </View>
-      <View style={styles.postBottom}>
-        <View style={styles.postIcons}>
-          <LikeSvg width={width} height={width} />
-          <CommentSvg width={width} height={width} />
-          <ShareSvg width={width} height={width} />
-        </View>
-        <View>
-          <SaveSvg width={width} height={width} />
-        </View>
-      </View>
-      <View style={styles.postCaption}>
-        <Text style={styles.userName}>{item.name}</Text>
-        <Text style={styles.caption}> {item.caption}</Text>
-      </View>
-    </>
-  );
+  }, []);
 
   return (
     <View style={styles.viewContainer}>
@@ -101,7 +105,7 @@ const Home = ({navigation}: any) => {
       <FlatList
         ListHeaderComponent={<StoryBar />}
         data={photos}
-        renderItem={renderItem}
+        renderItem={({item}) => <OptimizedListItem item={item} />}
         keyExtractor={item => item.id.toString()}
         horizontal={false}
         refreshControl={
