@@ -16,7 +16,10 @@ const MainNavigator = () => {
 
   return (
     <MainStackNavigator.Navigator
-      tabBar={props => <MyTabBar icons={icons} {...props} />}>
+      tabBar={props => <MyTabBar icons={icons} {...props} />}
+      screenOptions={{
+        tabBarHideOnKeyboard: true,
+      }}>
       <MainStackNavigator.Screen
         name="Home"
         component={HomeNav}
