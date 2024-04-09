@@ -82,8 +82,14 @@ const ProfileScreen = ({navigation}: any) => {
               </View>
             </View>
           </View>
-          <Text style={styles.text}>{userData.name}</Text>
-          <Text style={styles.text}>{userData.bio}</Text>
+          <View style={styles.changeable}>
+            <View style={styles.username}>
+              <Text style={styles.text}>{userData.name}</Text>
+            </View>
+            <View style={styles.bio}>
+              <Text style={styles.text}>{userData.bio}</Text>
+            </View>
+          </View>
           <View style={styles.profileButtonsContainer}>
             <Pressable>
               <View style={styles.profileButtons}>

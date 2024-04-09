@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   profileButtonsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 30,
+    marginVertical: 30,
   },
   buttonTitles: {color: '#F3F8FF'},
   postsContainer: {
@@ -39,5 +39,13 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   text: {color: '#F3F8FF'},
+  username: {
+    marginLeft: 20,
+    marginBottom: 20,
+  },
+  bio: {
+    marginLeft: 20,
+  },
+  changeable: {width: '95%'},
 });
 export default styles;
