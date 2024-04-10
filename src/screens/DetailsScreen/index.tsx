@@ -6,7 +6,7 @@ import LikeSvg from '../../assets/svg/LikeSvg2.svg';
 import CommentSvg from '../../assets/svg/CommentSvg.svg';
 import ShareSvg from '../../assets/svg/ShareSvg.svg';
 import SaveSvg from '../../assets/svg/SaveSvg.svg';
-import notifee from '@notifee/react-native'; // Import Notifee
+import notifee from '@notifee/react-native';
 
 const DetailsScreen = ({route}: {route: any}) => {
   const {postId} = route.params;
@@ -48,7 +48,7 @@ const DetailsScreen = ({route}: {route: any}) => {
           id: 'default',
           name: 'Default Channel',
           vibration: true,
-          vibrationPattern: [500, 1000],
+          sound: 'notification',
         });
 
         await notifee.displayNotification({
@@ -56,7 +56,9 @@ const DetailsScreen = ({route}: {route: any}) => {
           body: 'Someone liked your photo!',
           android: {
             channelId,
-            vibrationPattern: [500, 1000],
+            pressAction: {id: 'default'},
+            largeIcon: 'bootsplash_logo',
+            sound: 'notification',
           },
         });
       } catch (error) {
@@ -66,15 +68,13 @@ const DetailsScreen = ({route}: {route: any}) => {
   };
 
   const handleSaveImage = async () => {
-    // Perform saving image logic here
-
     try {
       await notifee.requestPermission();
       const channelId = await notifee.createChannel({
         id: 'default',
         name: 'Default Channel',
         vibration: true,
-        vibrationPattern: [500, 1000],
+        sound: 'notification',
       });
 
       await notifee.displayNotification({
@@ -82,7 +82,7 @@ const DetailsScreen = ({route}: {route: any}) => {
         body: 'Your image has been saved successfully!',
         android: {
           channelId,
-          vibrationPattern: [500, 1000],
+          sound: 'notification',
         },
       });
     } catch (error) {

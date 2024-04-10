@@ -14,11 +14,7 @@ const DetailsNav = () => {
         component={MyDrawer}
         options={{headerShown: false}}
       />
-      <ProfTab.Screen
-        name="Details"
-        component={DetailsScreen}
-        options={{headerShown: false}}
-      />
+      <ProfTab.Screen name="Details" component={DetailsScreen} />
     </ProfTab.Navigator>
   );
 };
