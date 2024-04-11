@@ -94,7 +94,7 @@ const NotifCenter = ({navigation}: any) => {
       const user = updatedNotifications[randomIndex].user;
       const message = `${user.name} just posted a photo`;
       await notifee.displayNotification({
-        title: 'New Notification',
+        title: 'New Post',
         body: message,
         android: {
           channelId,
@@ -136,7 +136,7 @@ const NotifCenter = ({navigation}: any) => {
           }}>
           <View style={styles.renderItemStyle}>
             <Image source={{uri: item.user.avatar}} style={styles.avatar} />
-            <Text style={styles.message}>{item.message}</Text>
+            <Text style={styles.message}>{item.user.name} just posted!</Text>
             <Image source={{uri: item.user.image}} style={styles.image} />
           </View>
         </Pressable>
