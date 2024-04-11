@@ -1,4 +1,3 @@
-```
 # GramHub
 
 GramHub is a [React Native](https://reactnative.dev/) application like [Instagram](https://www.instagram.com/) for users to showcase their profiles and posts.
