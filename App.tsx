@@ -4,8 +4,10 @@ import BootSplash from 'react-native-bootsplash';
 import {NavigationContainer} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import MainNavigator from './src/navigation/mainNavigator';
-import UnAuthSatck from './src/navigation/UnAuthSatck';
+import UnAuthStack from './src/navigation/UnAuthStack';
 import useAuthStore from './src/store/authStore';
+import {Provider} from 'react-redux';
+import store from './store';
 
 const linking = {
   prefixes: ['gramhub://'],
@@ -28,9 +30,11 @@ const App = () => {
   }, []);
   return (
     <SafeAreaProvider>
-      <NavigationContainer linking={linking}>
-        {authToken ? <MainNavigator /> : <UnAuthSatck />}
-      </NavigationContainer>
+      <Provider store={store}>
+        <NavigationContainer linking={linking}>
+          {authToken ? <MainNavigator /> : <UnAuthStack />}
+        </NavigationContainer>
+      </Provider>
     </SafeAreaProvider>
   );
 };

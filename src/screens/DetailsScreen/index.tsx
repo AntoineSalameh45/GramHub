@@ -1,18 +1,24 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import axios from 'axios';
-import styles from './styles';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import notifee from '@notifee/react-native';
 import LikeSvg from '../../assets/svg/LikeSvg2.svg';
 import CommentSvg from '../../assets/svg/CommentSvg.svg';
 import ShareSvg from '../../assets/svg/ShareSvg.svg';
 import SaveSvg from '../../assets/svg/SaveSvg.svg';
-import notifee from '@notifee/react-native';
+import {
+  incrementLikes,
+  decrementLikes,
+} from '../../../store/actions/LikesActions';
+import styles from './styles';
+import axios from 'axios';
 
 const DetailsScreen = ({route}: {route: any}) => {
   const {postId} = route.params;
   const [userData, setUserData] = useState<any>(null);
   const [postData, setPostData] = useState<any>(null);
   const [isLiked, setIsLiked] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +35,7 @@ const DetailsScreen = ({route}: {route: any}) => {
             (post: any) => post.id === postId,
           );
           setPostData(postData);
+          setIsLiked(postData.likes > 0);
         }
       } catch (error) {
         console.error('Error fetching post data:', error);
@@ -39,8 +46,6 @@ const DetailsScreen = ({route}: {route: any}) => {
   }, [postId]);
 
   const handleLikePress = async () => {
-    setIsLiked(!isLiked);
-
     if (!isLiked) {
       try {
         await notifee.requestPermission();
@@ -61,10 +66,23 @@ const DetailsScreen = ({route}: {route: any}) => {
             sound: 'notification',
           },
         });
+
+        dispatch(incrementLikes(postId));
+        setPostData(prevPostData => ({
+          ...prevPostData,
+          likes: prevPostData.likes + 1,
+        }));
       } catch (error) {
         console.error('Error displaying notification:', error);
       }
+    } else {
+      dispatch(decrementLikes(postId));
+      setPostData(prevPostData => ({
+        ...prevPostData,
+        likes: Math.max(0, prevPostData.likes - 1),
+      }));
     }
+    setIsLiked(!isLiked);
   };
 
   const handleSaveImage = async () => {
@@ -110,6 +128,7 @@ const DetailsScreen = ({route}: {route: any}) => {
                   fill={isLiked ? '#86469C' : 'none'}
                 />
               </TouchableOpacity>
+              <Text>{postData.likes} Likes</Text>
               <CommentSvg width={25} height={25} />
               <ShareSvg width={25} height={25} />
             </View>
