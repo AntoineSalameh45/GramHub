@@ -5,6 +5,7 @@ export type RootStackParamList = {
   Profile: undefined;
   Details: undefined;
   User: undefined;
+  Comments: undefined;
   'Direct Messages': undefined;
   'Notification Center': undefined;
 };

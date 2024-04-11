@@ -6,6 +6,7 @@ import {
   RefreshControl,
   Text,
   TouchableOpacity,
+  Pressable,
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native'; // Import useFocusEffect
 import axios from 'axios';
@@ -29,7 +30,12 @@ interface Photo {
 const OptimizedListItem: React.FC<{
   item: Photo;
   onSaveToggle: (id: number) => void;
-}> = ({item, onSaveToggle}) => {
+  navigation: any;
+}> = ({item, onSaveToggle, navigation}) => {
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const handleLikePress = async () => {
+    setIsLiked(!isLiked);
+  };
   const handleSaveToggle = () => {
     onSaveToggle(item.id);
   };
@@ -45,8 +51,17 @@ const OptimizedListItem: React.FC<{
       </View>
       <View style={styles.postBottom}>
         <View style={styles.postIcons}>
-          <LikeSvg width={25} height={25} />
-          <CommentSvg width={25} height={25} />
+          <TouchableOpacity onPress={handleLikePress}>
+            <LikeSvg
+              width={25}
+              height={25}
+              fill={isLiked ? '#86469C' : 'none'}
+            />
+          </TouchableOpacity>
+          <Pressable
+            onPress={() => navigation.navigate('Comments', {post: item})}>
+            <CommentSvg width={25} height={25} />
+          </Pressable>
           <ShareSvg width={25} height={25} />
         </View>
         <TouchableOpacity onPress={handleSaveToggle}>
@@ -134,7 +149,6 @@ const Home = ({navigation}: any) => {
     }
   };
 
-  // Use useFocusEffect hook to automatically refresh data when the screen is focused
   useFocusEffect(
     useCallback(() => {
       const refreshData = async () => {
@@ -155,7 +169,11 @@ const Home = ({navigation}: any) => {
         ListHeaderComponent={<StoryBar />}
         data={photos}
         renderItem={({item}) => (
-          <OptimizedListItem item={item} onSaveToggle={handleSaveToggle} />
+          <OptimizedListItem
+            item={item}
+            onSaveToggle={handleSaveToggle}
+            navigation={navigation}
+          />
         )}
         keyExtractor={item => item.id.toString()}
         horizontal={false}
