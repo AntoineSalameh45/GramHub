@@ -15,7 +15,7 @@ const secureStorage = {
   setItem: async (name: string, value: string) => {
     try {
       await RNSecureStorage.setItem(name, value, {
-        accessible: ACCESSIBLE.WHEN_UNLOCKED,
+        accessible: ACCESSIBLE.ALWAYS,
       });
     } catch (error) {
       console.error('Failed to set item in secure storage', error);
