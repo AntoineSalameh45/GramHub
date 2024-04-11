@@ -25,7 +25,6 @@ const MainNavigator = () => {
         component={HomeNav}
         options={{
           headerShown: false,
-          tabBarIcon: () => <HomeIcon />,
         }}
       />
       <MainStackNavigator.Screen
@@ -33,7 +32,6 @@ const MainNavigator = () => {
         component={SearchScreen}
         options={{
           headerShown: false,
-          tabBarIcon: () => <SearchIcon />,
         }}
       />
       <MainStackNavigator.Screen
@@ -41,7 +39,6 @@ const MainNavigator = () => {
         component={DetailsNav}
         options={{
           headerShown: false,
-          tabBarIcon: () => <ProfileIcon />,
         }}
       />
     </MainStackNavigator.Navigator>

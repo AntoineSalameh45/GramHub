@@ -4,7 +4,7 @@ import LoginScreen from '../screens/LoginScreen';
 
 const UnAuthStackNavigator = createNativeStackNavigator();
 
-const UnAuthSatck = () => {
+const UnAuthStack = () => {
   return (
     <UnAuthStackNavigator.Navigator>
       <UnAuthStackNavigator.Screen
@@ -16,4 +16,4 @@ const UnAuthSatck = () => {
   );
 };
 
-export default UnAuthSatck;
+export default UnAuthStack;
