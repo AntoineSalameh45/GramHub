@@ -129,11 +129,18 @@ const NotifCenter = ({navigation}: any) => {
 
   const renderItem = ({item}: {item: iNotification}) => {
     return (
-      <View style={styles.renderItemStyle}>
-        <Image source={{uri: item.user.avatar}} style={styles.avatar} />
-        <Text style={styles.message}>{item.message}</Text>
-        <Image source={{uri: item.user.image}} style={styles.image} />
-      </View>
+      <>
+        <Pressable
+          onPress={() => {
+            navigation.navigate('Comments', {post: item.user});
+          }}>
+          <View style={styles.renderItemStyle}>
+            <Image source={{uri: item.user.avatar}} style={styles.avatar} />
+            <Text style={styles.message}>{item.message}</Text>
+            <Image source={{uri: item.user.image}} style={styles.image} />
+          </View>
+        </Pressable>
+      </>
     );
   };
 
@@ -147,7 +154,7 @@ const NotifCenter = ({navigation}: any) => {
         <ClearSvg width={30} height={30} />
       </Pressable>
       <FlatList
-        data={notifications}
+        data={notifications.reverse()}
         renderItem={renderItem}
         keyExtractor={item => item.id}
       />
