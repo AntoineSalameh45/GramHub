@@ -1,15 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import notifee from '@notifee/react-native';
 import LikeSvg from '../../assets/svg/LikeSvg2.svg';
 import CommentSvg from '../../assets/svg/CommentSvg.svg';
 import ShareSvg from '../../assets/svg/ShareSvg.svg';
 import SaveSvg from '../../assets/svg/SaveSvg.svg';
-import {
-  incrementLikes,
-  decrementLikes,
-} from '../../../store/actions/LikesActions';
 import styles from './styles';
 import axios from 'axios';
 
@@ -17,8 +12,8 @@ const DetailsScreen = ({route}: {route: any}) => {
   const {postId} = route.params;
   const [userData, setUserData] = useState<any>(null);
   const [postData, setPostData] = useState<any>(null);
+  const [likesCount, setLikesCount] = useState<number>(0);
   const [isLiked, setIsLiked] = useState<boolean>(false);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,7 +30,8 @@ const DetailsScreen = ({route}: {route: any}) => {
             (post: any) => post.id === postId,
           );
           setPostData(postData);
-          setIsLiked(postData.likes > 0);
+          setLikesCount(postData.likes);
+          setIsLiked(postData.isLiked);
         }
       } catch (error) {
         console.error('Error fetching post data:', error);
@@ -46,47 +42,33 @@ const DetailsScreen = ({route}: {route: any}) => {
   }, [postId]);
 
   const handleLikePress = async () => {
-    if (!isLiked) {
-      try {
-        await notifee.requestPermission();
-        const channelId = await notifee.createChannel({
-          id: 'default',
-          name: 'Default Channel',
-          vibration: true,
-          sound: 'notification',
-        });
-
-        await notifee.displayNotification({
-          title: 'New Like',
-          body: 'Someone liked your photo!',
-          android: {
-            channelId,
-            pressAction: {id: 'default'},
-            largeIcon: 'bootsplash_logo',
-            sound: 'notification',
-          },
-        });
-
-        dispatch(incrementLikes(postId));
-        setPostData(prevPostData => ({
-          ...prevPostData,
-          likes: prevPostData.likes + 1,
-        }));
-      } catch (error) {
-        console.error('Error displaying notification:', error);
-      }
-    } else {
-      dispatch(decrementLikes(postId));
-      setPostData(prevPostData => ({
-        ...prevPostData,
-        likes: Math.max(0, prevPostData.likes - 1),
-      }));
-    }
+    const newLikesCount = isLiked ? likesCount - 1 : likesCount + 1;
+    setLikesCount(newLikesCount);
     setIsLiked(!isLiked);
-  };
 
-  const handleSaveImage = async () => {
     try {
+      const response = await axios.get(
+        'https://660fd81d0640280f219b9867.mockapi.io/api/hub/user',
+      );
+      const userData = response.data[0];
+      const updatedPosts = userData.posts.map((post: any) => {
+        if (post.id === postId) {
+          return {
+            ...post,
+            likes: newLikesCount,
+            isLiked: !isLiked,
+          };
+        }
+        return post;
+      });
+
+      await axios.put(
+        `https://660fd81d0640280f219b9867.mockapi.io/api/hub/user/${userData.id}`,
+        {
+          posts: updatedPosts,
+        },
+      );
+
       await notifee.requestPermission();
       const channelId = await notifee.createChannel({
         id: 'default',
@@ -96,12 +78,25 @@ const DetailsScreen = ({route}: {route: any}) => {
       });
 
       await notifee.displayNotification({
-        title: 'Image Saved',
-        body: 'Your image has been saved successfully!',
+        title: 'Like Updated',
+        body: isLiked ? 'Someone unliked your post' : 'Someone liked your post',
         android: {
           channelId,
+          pressAction: {id: 'default'},
+          largeIcon: 'bootsplash_logo',
           sound: 'notification',
         },
+      });
+    } catch (error) {
+      console.error('Error updating likes:', error);
+    }
+  };
+
+  const handleSaveImage = async () => {
+    try {
+      await notifee.displayNotification({
+        title: 'Image Saved',
+        body: 'Your image has been saved successfully!',
       });
     } catch (error) {
       console.error('Error displaying notification:', error);
@@ -128,7 +123,7 @@ const DetailsScreen = ({route}: {route: any}) => {
                   fill={isLiked ? '#86469C' : 'none'}
                 />
               </TouchableOpacity>
-              <Text>{postData.likes} Likes</Text>
+              <Text>{likesCount} Likes</Text>
               <CommentSvg width={25} height={25} />
               <ShareSvg width={25} height={25} />
             </View>
