@@ -19,7 +19,7 @@ const OnlineGallery = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        'https://660fd81d0640280f219b9867.mockapi.io/api/hub/post',
+        'https://6617aab9ed6b8fa43483619c.mockapi.io/api/hub/posts',
       );
       setPhotos(response.data);
     } catch (error) {

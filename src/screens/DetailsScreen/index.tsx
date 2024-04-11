@@ -19,7 +19,7 @@ const DetailsScreen = ({route}: {route: any}) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          'https://660fd81d0640280f219b9867.mockapi.io/api/hub/user',
+          'https://6617aab9ed6b8fa43483619c.mockapi.io/api/hub/user',
         );
         const userData = response.data.find((user: any) =>
           user.posts.some((post: any) => post.id === postId),
@@ -48,7 +48,7 @@ const DetailsScreen = ({route}: {route: any}) => {
 
     try {
       const response = await axios.get(
-        'https://660fd81d0640280f219b9867.mockapi.io/api/hub/user',
+        'https://6617aab9ed6b8fa43483619c.mockapi.io/api/hub/user',
       );
       const userData = response.data[0];
       const updatedPosts = userData.posts.map((post: any) => {
@@ -63,7 +63,7 @@ const DetailsScreen = ({route}: {route: any}) => {
       });
 
       await axios.put(
-        `https://660fd81d0640280f219b9867.mockapi.io/api/hub/user/${userData.id}`,
+        `https://6617aab9ed6b8fa43483619c.mockapi.io/api/hub/user/${userData.id}`,
         {
           posts: updatedPosts,
         },

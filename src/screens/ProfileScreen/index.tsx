@@ -26,7 +26,7 @@ const ProfileScreen = ({navigation}: any) => {
     const fetchData = async () => {
       try {
         const response = await axios.get<iUserData[]>(
-          'https://660fd81d0640280f219b9867.mockapi.io/api/hub/user',
+          'https://6617aab9ed6b8fa43483619c.mockapi.io/api/hub/user',
         );
         if (response.data && response.data.length > 0) {
           setUserData(response.data[0]);
@@ -43,7 +43,7 @@ const ProfileScreen = ({navigation}: any) => {
     const fetchData = async () => {
       try {
         const response = await axios.get<iUserData[]>(
-          'https://660fd81d0640280f219b9867.mockapi.io/api/hub/user',
+          'https://6617aab9ed6b8fa43483619c.mockapi.io/api/hub/user',
         );
         if (response.data && response.data.length > 0) {
           setUserData(response.data[0]);

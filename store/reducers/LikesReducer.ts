@@ -3,7 +3,6 @@ import {LikesActionTypes} from '../actions/LikesActions';
 interface Post {
   id: string;
   likes: number;
-  // Add other post properties as needed
 }
 
 interface LikesState {
@@ -11,7 +10,7 @@ interface LikesState {
 }
 
 const initialState: LikesState = {
-  posts: [], // Initial state for posts
+  posts: [],
 };
 
 const likesReducer = (

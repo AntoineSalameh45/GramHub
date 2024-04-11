@@ -15,7 +15,7 @@ const AboutAccount = ({navigation}: any) => {
   const fetchUserData = async () => {
     try {
       const response = await axios.get(
-        'https://660fd81d0640280f219b9867.mockapi.io/api/hub/user',
+        'https://6617aab9ed6b8fa43483619c.mockapi.io/api/hub/user',
       );
       const userData = response.data[0];
 
@@ -30,7 +30,7 @@ const AboutAccount = ({navigation}: any) => {
   const handleSave = async () => {
     try {
       await axios.put(
-        `https://660fd81d0640280f219b9867.mockapi.io/api/hub/user/${userId}`,
+        `https://6617aab9ed6b8fa43483619c.mockapi.io/api/hub/user/${userId}`,
         {
           name: username,
           bio: bio,

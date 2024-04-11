@@ -24,7 +24,7 @@ const StoryBar = () => {
   const fetchStoryData = async (page: number) => {
     try {
       const response = await axios.get(
-        `https://660fd81d0640280f219b9867.mockapi.io/api/hub/post?page=${page}&limit=10`,
+        `https://6617aab9ed6b8fa43483619c.mockapi.io/api/hub/posts?page=${page}&limit=10`,
       );
       return response.data;
     } catch (error) {
