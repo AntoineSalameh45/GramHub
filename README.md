@@ -1,3 +1,12 @@
+![HomeScreen](screenshots/Screenshot_20240411-212040.png)
+![SearchScreen](screenshots/Screenshot_20240411-212048.png)
+![ProfileScreen](screenshots/Screenshot_20240411-212054.png)
+![NotificationCenter](screenshots/Screenshot_20240411-212129.png)
+![EditProfile](screenshots/Screenshot_20240411-212108.png)
+![Favorites](screenshots/Screenshot_20240411-212059.png)
+![Comments](screenshots/Screenshot_20240411-212147.png)
+![Post](screenshots/Screenshot_20240411-212218.png)
+
 # GramHub
 
 GramHub is a [React Native](https://reactnative.dev/) application like [Instagram](https://www.instagram.com/) for users to showcase their profiles and posts.
@@ -14,8 +23,13 @@ Here are some screenshots of the profiling:
 
 - View user profile details including name, avatar, followers, following, and bio.
 - Display user's posts with images and captions.
-- Edit profile functionality.
+- Edit profile functionality (name and bio).
 - Share profile functionality with deep linking support.
+- Saving comments using redux state management.
+- Authentication flow.
+- Add to clipboard button to share profile.
+- Like, save and comment functionnalities.
+- Notification on like, dislike and from notification center on new posts (using a button).
 
 ## Installation
 
