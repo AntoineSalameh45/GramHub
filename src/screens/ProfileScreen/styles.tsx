@@ -47,5 +47,14 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   changeable: {width: '95%'},
+  toast: {
+    backgroundColor: '#1e1e1e',
+    position: 'absolute',
+    bottom: 50,
+    alignSelf: 'center',
+    padding: 15,
+    borderRadius: 11,
+  },
+  toastText: {color: '#fff'},
 });
 export default styles;

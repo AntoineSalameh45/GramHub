@@ -3,6 +3,7 @@ import {View, Text, Image, ActivityIndicator, Pressable} from 'react-native';
 import axios from 'axios';
 import styles from './styles';
 import ProfileNavigation from '../../navigation/ProfileNavigation';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 export interface iUserData {
   name: string;
@@ -21,6 +22,7 @@ export interface iPostData {
 
 const ProfileScreen = ({navigation}: any) => {
   const [userData, setUserData] = useState<iUserData | null>(null);
+  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,6 +61,12 @@ const ProfileScreen = ({navigation}: any) => {
     return unsubscribe;
   }, [navigation]);
 
+  const copyToClipboard = () => {
+    Clipboard.setString('gramhub://profile');
+    setShowToast(true); // Show toast when link is copied
+    setTimeout(() => setShowToast(false), 2000); // Hide toast after 2 seconds
+  };
+
   return (
     <View style={styles.viewContainer}>
       {userData ? (
@@ -91,17 +99,15 @@ const ProfileScreen = ({navigation}: any) => {
             </View>
           </View>
           <View style={styles.profileButtonsContainer}>
-            <Pressable>
+            <Pressable
+              onPress={() => {
+                navigation.navigate('About Account');
+              }}>
               <View style={styles.profileButtons}>
-                <Pressable
-                  onPress={() => {
-                    navigation.navigate('About Account');
-                  }}>
-                  <Text style={styles.buttonTitles}>Edit Profile</Text>
-                </Pressable>
+                <Text style={styles.buttonTitles}>Edit Profile</Text>
               </View>
             </Pressable>
-            <Pressable>
+            <Pressable onPress={copyToClipboard}>
               <View style={styles.profileButtons}>
                 <Text style={styles.buttonTitles}>Share Profile</Text>
               </View>
@@ -111,6 +117,11 @@ const ProfileScreen = ({navigation}: any) => {
         </>
       ) : (
         <ActivityIndicator />
+      )}
+      {showToast && (
+        <View style={styles.toast}>
+          <Text style={styles.toastText}>Link copied to clipboard!</Text>
+        </View>
       )}
     </View>
   );
