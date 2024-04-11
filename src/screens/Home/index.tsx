@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
+import {useFocusEffect} from '@react-navigation/native'; // Import useFocusEffect
 import axios from 'axios';
 import styles from './styles';
 import LikeSvg from '../../assets/svg/LikeSvg2.svg';
@@ -25,7 +26,14 @@ interface Photo {
   saved: boolean;
 }
 
-const OptimizedListItem: React.FC<{item: Photo}> = ({item}) => {
+const OptimizedListItem: React.FC<{
+  item: Photo;
+  onSaveToggle: (id: number) => void;
+}> = ({item, onSaveToggle}) => {
+  const handleSaveToggle = () => {
+    onSaveToggle(item.id);
+  };
+
   return (
     <View>
       <View style={styles.postHeader}>
@@ -41,7 +49,7 @@ const OptimizedListItem: React.FC<{item: Photo}> = ({item}) => {
           <CommentSvg width={25} height={25} />
           <ShareSvg width={25} height={25} />
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleSaveToggle}>
           <SaveSvg
             width={25}
             height={25}
@@ -108,13 +116,47 @@ const Home = ({navigation}: any) => {
     });
   }, [fetchData]);
 
+  const handleSaveToggle = async (id: number) => {
+    try {
+      const updatedPhotos = photos.map(photo => {
+        if (photo.id === id) {
+          return {...photo, saved: !photo.saved};
+        }
+        return photo;
+      });
+      setPhotos(updatedPhotos);
+      await axios.put(
+        `https://6617aab9ed6b8fa43483619c.mockapi.io/api/hub/posts/${id}`,
+        {saved: !photos.find(photo => photo.id === id)?.saved},
+      );
+    } catch (error) {
+      console.error('Error toggling save status:', error);
+    }
+  };
+
+  // Use useFocusEffect hook to automatically refresh data when the screen is focused
+  useFocusEffect(
+    useCallback(() => {
+      const refreshData = async () => {
+        setRefreshing(true);
+        const data = await fetchData(1);
+        setPhotos(data);
+        setPage(1);
+        setRefreshing(false);
+      };
+      refreshData();
+    }, [fetchData]),
+  );
+
   return (
     <View style={styles.viewContainer}>
       <AppHeader navigation={navigation} />
       <FlatList
         ListHeaderComponent={<StoryBar />}
         data={photos}
-        renderItem={({item}) => <OptimizedListItem item={item} />}
+        renderItem={({item}) => (
+          <OptimizedListItem item={item} onSaveToggle={handleSaveToggle} />
+        )}
         keyExtractor={item => item.id.toString()}
         horizontal={false}
         refreshControl={
