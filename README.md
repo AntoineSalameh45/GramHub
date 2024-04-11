@@ -2,6 +2,14 @@
 
 GramHub is a [React Native](https://reactnative.dev/) application like [Instagram](https://www.instagram.com/) for users to showcase their profiles and posts.
 
+## Profiling
+
+Here are some screenshots of the profiling:
+
+![Profiling1](screenshots/rndevtoolssc1.jpg)
+![Profiling2](screenshots/rndevtoolssc2.jpg)
+![Profiling3](screenshots/rndevtoolssc3.jpg)
+
 ## Features
 
 - View user profile details including name, avatar, followers, following, and bio.
@@ -74,6 +82,3 @@ Contributions are welcome! Feel free to open an issue or submit a pull request f
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
-```
-
-Feel free to modify this template to suit your project's specific needs and add any additional information you think would be helpful for users or contributors.
